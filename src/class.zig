@@ -7,6 +7,7 @@ pub const Class = struct {
             .name = "Mage",
         };
     }
+    pub fn generateClasses() void {}
     pub fn GetClassName(me: self) []const u8 {
         return me.name;
     }
