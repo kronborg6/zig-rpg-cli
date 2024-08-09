@@ -1,5 +1,28 @@
 const std = @import("std");
 
+const Program = struct {
+    name: []const u8,
+    path: []const u8,
+    desc: []const u8,
+};
+const examples = [_]Program{
+    .{
+        .name = "random",
+        .path = "examples/random.zig",
+        .desc = "get a random number",
+    },
+    // .{
+    //     .name = "hello",
+    //     .path = "examples/hello.zig",
+    //     .desc = "hello zig world",
+    // },
+    // .{
+    //     .name = "gui",
+    //     .path = "examples/gui.zig",
+    //     .desc = "gui",
+    // },
+};
+
 // Although this function looks imperative, note that its job is to
 // declaratively construct a build graph that will be executed by an external
 // runner.
@@ -15,19 +38,19 @@ pub fn build(b: *std.Build) void {
     // set a preferred release mode, allowing the user to decide how to optimize.
     const optimize = b.standardOptimizeOption(.{});
 
-    const lib = b.addStaticLibrary(.{
-        .name = "rpg-cli",
-        // In this case the main source file is merely a path, however, in more
-        // complicated build scripts, this could be a generated file.
-        .root_source_file = b.path("src/root.zig"),
-        .target = target,
-        .optimize = optimize,
-    });
+    // const lib = b.addStaticLibrary(.{
+    //     .name = "rpg-cli",
+    //     // In this case the main source file is merely a path, however, in more
+    //     // complicated build scripts, this could be a generated file.
+    //     .root_source_file = b.path("src/root.zig"),
+    //     .target = target,
+    //     .optimize = optimize,
+    // });
 
-    // This declares intent for the library to be installed into the standard
-    // location when the user invokes the "install" step (the default step when
-    // running `zig build`).
-    b.installArtifact(lib);
+    // // This declares intent for the library to be installed into the standard
+    // // location when the user invokes the "install" step (the default step when
+    // // running `zig build`).
+    // b.installArtifact(lib);
 
     const exe = b.addExecutable(.{
         .name = "rpg-cli",
@@ -88,4 +111,24 @@ pub fn build(b: *std.Build) void {
     const test_step = b.step("test", "Run unit tests");
     test_step.dependOn(&run_lib_unit_tests.step);
     test_step.dependOn(&run_exe_unit_tests.step);
+
+    const examples_step = b.step("examples", "Builds all the examples");
+
+    for (examples) |ex| {
+        const exe_example = b.addExecutable(.{
+            .name = ex.name,
+            .root_source_file = b.path(ex.path),
+            .optimize = optimize,
+            .target = target,
+        });
+        // exe_example.linkLibrary(raylib_artifact);
+        // exe_example.root_module.addImport("raylib", raylib);
+        // exe_example.root_module.addImport("raygui", raygui);
+
+        const run_ex_cmd = b.addRunArtifact(exe_example);
+        const run_exe_step = b.step(ex.name, ex.desc);
+
+        run_exe_step.dependOn(&run_ex_cmd.step);
+        examples_step.dependOn(&exe_example.step);
+    }
 }
