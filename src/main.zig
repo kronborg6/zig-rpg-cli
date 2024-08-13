@@ -28,6 +28,8 @@ pub fn main() !void {
         std.debug.print("Placename: {s}\n", .{value.name});
     }
     std.debug.print("Player Start place is: {s}\n", .{world.player.?.curent_postion.?.name});
+    try world.travel();
+    std.debug.print("Player Start place is: {s}\n", .{world.player.?.curent_postion.?.name});
 
     // const random = try util.Random();
     // std.debug.print("{}\n", .{try util.Random(12)});
@@ -42,25 +44,39 @@ test "World and Player memory management test" {
     // defer gpa.deinit(); // Ensure the allocator is properly deinitialized.
 
     // Step 1: Initialize the World
-    var world = try W.init(&allocator, 1);
+    var world = try W.init(&allocator, 10);
     defer world.deinit(); // Ensure the world is deinitialized
 
-    // Step 2: Create and add a Player to the World
-    const player = try allocator.create(P);
-    errdefer allocator.destroy(player);
+    // // Step 2: Create and add a Player to the World
+    // const player = try allocator.create(P);
+    // errdefer allocator.destroy(player);
 
-    player.* = P.init("TestPlayer"); // Initialize the player instance
-    world.addPlayer(player);
+    // player.* = P.init("TestPlayer"); // Initialize the player instance
+    world.initPlayer("TestPlayer");
 
-    try world.generatePlaces();
+    try world.generatePlaces(1);
 
     // Step 3: Check if the player is correctly added to the world
     try std.testing.expect(world.player != null);
     try std.testing.expectEqualStrings("TestPlayer", world.player.?.name);
     try std.testing.expect(world.places != null);
-    try std.testing.expectEqualStrings("Starter", world.places.?[0].name);
+    try std.testing.expectEqualStrings("FooTown", world.player.?.curent_postion.?.name);
 
     // Additional assertions can be added here if needed
+}
+test "World Travel" {
+    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
+    var allocator = gpa.allocator();
+
+    var world = try W.init(&allocator, 10);
+    defer world.deinit(); // Ensure the world is deinitialized
+
+    world.initPlayer("TestPlayer");
+
+    // const old_name = world.player.?.curent_postion.?.name;
+    try world.travel();
+
+    // try std.testing.Str
 }
 
 // Example: Access player and places.

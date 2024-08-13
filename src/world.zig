@@ -7,6 +7,9 @@ const util = @import("util.zig");
 const Allocator = std.mem.Allocator;
 
 // TODO: make a % chance for what places are picked
+//
+// Subject To Change when player need to travler to the next we get 3 random place from a combin list of city and otherPlaces
+// need to check for reapt maby mak a list frist
 
 const Starter = Places{ .name = "Starter" };
 
@@ -62,6 +65,37 @@ pub const World = struct {
             if (i == 0) self.places.?[i] = city[0] else if (i == 9) self.places.?[i] = city[1] else self.places.?[i] = otherPlaces[try util.Random(6)];
         }
         self.player.?.curent_postion = &self.places.?[0];
+    }
+    pub fn travel(self: *World) !void {
+        const length: u8 = @intCast(self.places.?.len - 1);
+        // const all = city ++ otherPlaces;
+        var random = [3]u8{
+            try util.Random(length),
+            try util.Random(length),
+            try util.Random(length),
+        };
+        var i: u8 = 0;
+        while (i < 3) : (i += 1) {
+            if (random[0] == random[1]) {
+                random[0] = try util.Random(length);
+            }
+            if (random[0] == random[2]) {
+                random[0] = try util.Random(length);
+            }
+            if (random[1] == random[2]) {
+                random[1] = try util.Random(length);
+            }
+        }
+        // // const gg = try util.Random(2);
+        // // const picked = random[gg];
+        self.player.?.curent_postion.? = &self.places.?[try util.Random(length)];
+        // std.debug.print("{}\n", .{try util.Random(legt)});
+        // std.debug.print("{}\n", .{try util.Random(legt)});
+        // std.debug.print("{}\n", .{try util.Random(legt)});
+        // std.debug.print("{}\n", .{try util.Random(legt)});
+        // std.debug.print("{}\n", .{&self.places.?[try util.Random(2)].name});
+        // std.debug.print("{}\n", .{&self.places.?[try util.Random(2)].name});
+        _ = .{self};
     }
 
     pub fn de(self: World) void {
