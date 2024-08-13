@@ -9,14 +9,14 @@ pub const Player = struct {
     // xp: u16,
     // class: Class,
 
-    pub fn init(name: []const u8, class: Class) self {
+    pub fn init(name: []const u8) self {
         return self{
             .name = name,
-            .hp = 100,
-            .mp = 50,
-            .lvl = 1,
-            .xp = 0,
-            .class = class,
+            // .hp = 100,
+            // .mp = 50,
+            // .lvl = 1,
+            // .xp = 0,
+            // .class = class,
         };
     }
     pub fn GetName(me: self) void {

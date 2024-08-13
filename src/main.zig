@@ -8,34 +8,62 @@ const W = @import("world.zig").World;
 pub fn main() !void {
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
     var allocator = gpa.allocator();
-    // defer gpa.deinit(); // Ensure the allocator is properly deinitialized.
-
-    // Initialize the world with space for 10 places.
     var world = try W.init(&allocator, 10);
     defer world.deinit();
 
-    // Example: Access player and places.
-    if (world.player) |player| {
-        player.name = "Hero";
-        std.debug.print("Player Name: {s}\n", .{player.name});
-    }
+    const player = try allocator.create(P);
+    errdefer allocator.destroy(player);
 
-    if (world.places) |places| {
-        // Example: Initialize a place.
-        places[0] = PL{ .name = "Town" };
-        std.debug.print("First Place Name: {s}\n", .{places[0].name});
-    }
+    player.* = P.init("Kronborg"); // Initialize the player instance
+    world.addPlayer(player);
 
-    // Additional game logic here...
-
-    // Memory cleanup is handled by the defer statement.
-    // var gpa = std.heap.GeneralPurposeAllocator(.{}){};
-    // const allocator = gpa.allocator();
-    // var world = try W.init(allocator, 4);
-    // defer world.deinit();
-
-    // std.debug.print("world: {any}", .{world});
+    std.debug.print("player name: {s}\n", .{world.player.?.name});
 }
+test "World and Player memory management test" {
+    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
+    var allocator = gpa.allocator();
+    // defer gpa.deinit(); // Ensure the allocator is properly deinitialized.
+
+    // Step 1: Initialize the World
+    var world = try W.init(&allocator, 10);
+    defer world.deinit(); // Ensure the world is deinitialized
+
+    // Step 2: Create and add a Player to the World
+    const player = try allocator.create(P);
+    errdefer allocator.destroy(player);
+
+    player.* = P.init("TestPlayer"); // Initialize the player instance
+    world.addPlayer(player);
+
+    // Step 3: Check if the player is correctly added to the world
+    try std.testing.expect(world.player != null);
+    try std.testing.expectEqualStrings("TestPlayer", world.player.?.name);
+
+    // Additional assertions can be added here if needed
+}
+
+// Example: Access player and places.
+// if (world.player) |player| {
+//     player.name = "Hero";
+//     std.debug.print("Player Name: {s}\n", .{player.name});
+// }
+
+// if (world.places) |places| {
+//     // Example: Initialize a place.
+//     places[0] = PL{ .name = "Town" };
+//     std.debug.print("First Place Name: {s}\n", .{places[0].name});
+// }
+
+// Additional game logic here...
+
+// Memory cleanup is handled by the defer statement.
+// var gpa = std.heap.GeneralPurposeAllocator(.{}){};
+// const allocator = gpa.allocator();
+// var world = try W.init(allocator, 4);
+// defer world.deinit();
+
+// std.debug.print("world: {any}", .{world});
+// }
 
 // pub fn mainOld() !void {
 //     var gpa = std.heap.GeneralPurposeAllocator(.{}){};

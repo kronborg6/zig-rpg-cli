@@ -12,14 +12,21 @@ pub const World = struct {
         const places = try allocator.alloc(Places, places_count);
         errdefer allocator.free(places);
 
-        const player = try allocator.create(Player);
-        errdefer allocator.destroy(player);
+        // const player = try allocator.create(Player);
+        // errdefer allocator.destroy(player);
 
         return World{
             .places = places,
-            .player = player,
+            .player = null,
             .allocator = allocator,
         };
+    }
+
+    pub fn addPlayer(self: *World, player: *Player) void {
+        self.player = player;
+    }
+    pub fn Test(self: *World) void {
+        self.allocator.destroy(self.player.?);
     }
 
     pub fn deinit(self: *World) void {
@@ -31,3 +38,6 @@ pub const World = struct {
         }
     }
 };
+
+// const testing = std.testing;
+// test "IntWorld: add"
