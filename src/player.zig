@@ -1,8 +1,10 @@
 const std = @import("std");
 const Class = @import("class.zig").Class;
+const Place = @import("map.zig").Place;
 pub const Player = struct {
     const self = @This();
     name: []const u8,
+    curent_postion: ?*Place,
     // hp: i16,
     // mp: i16,
     // lvl: u8,
@@ -12,6 +14,7 @@ pub const Player = struct {
     pub fn init(name: []const u8) self {
         return self{
             .name = name,
+            .curent_postion = null,
             // .hp = 100,
             // .mp = 50,
             // .lvl = 1,
