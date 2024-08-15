@@ -10,12 +10,12 @@ pub const Place = struct {
     // maxLvl: u8,
     // // mapType: []const u8,
     // monsters: ?[]Monster,
-    // spawnC: []SpawnCance,
+    spawnC: []SpawnCance,
     // allocator: Allocator,
 
-    pub fn init(allocator: Allocator, spawn_change_cout: usize, monsters_cout: usize, name: []const u8) !Place {
-        const spawn_changes = try allocator.alloc([]SpawnCance, spawn_change_cout);
-        errdefer allocator.free(spawn_changes);
+    pub fn init(allocator: Allocator, spawn_changes: []SpawnCance, monsters_cout: usize, name: []const u8) !Place {
+        // const spawn_changes = try allocator.alloc([]SpawnCance, spawn_change_cout);
+        // errdefer allocator.free(spawn_changes);
         const monsters = try allocator.alloc([]Monster, monsters_cout);
         errdefer allocator.free(monsters);
 
@@ -27,6 +27,9 @@ pub const Place = struct {
             .spawnC = spawn_changes,
             .allocator = allocator,
         };
+    }
+    pub fn generateMobs(self: Place) void {
+        _ = .{self};
     }
 
     // pub fn init() self {
@@ -47,7 +50,35 @@ pub const Place = struct {
     // }
 };
 pub const SpawnCance = struct {
-    monsters: []Monster,
-    procent: u32,
-    place: Place,
+    monster: Monster,
+    procent: [2]u8,
+    // place: Place,
+};
+
+//
+const spawns = [_]SpawnCance{
+    .{
+        .monster = Monster{
+            .name = "Zombie",
+        },
+        .procent = [2]u8{ 0, 3333 },
+    },
+    .{
+        .monster = Monster{
+            .name = "Skeleton",
+        },
+        .procent = [2]u8{ 3334, 5000 },
+    },
+    .{
+        .monster = Monster{
+            .name = "Slim",
+        },
+        .procent = [2]u8{ 5001, 9989 },
+    },
+    .{
+        .monster = Monster{
+            .name = "Dragon",
+        },
+        .procent = [2]u8{ 9990, 10000 },
+    },
 };

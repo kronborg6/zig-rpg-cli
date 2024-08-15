@@ -59,6 +59,7 @@ pub const World = struct {
     pub fn Test(self: *World) void {
         self.allocator.destroy(self.player.?);
     }
+    // TODO: need to paceds places from main func where we need to create them
     pub fn generatePlaces(self: World, places_cout: u8) !void {
         // need to add a % for echace place and max cout for som
         for (places_cout, 0..) |_, i| {
@@ -86,16 +87,17 @@ pub const World = struct {
                 random[1] = try util.Random(length);
             }
         }
-        // // const gg = try util.Random(2);
-        // // const picked = random[gg];
-        self.player.?.curent_postion.? = &self.places.?[try util.Random(length)];
-        // std.debug.print("{}\n", .{try util.Random(legt)});
-        // std.debug.print("{}\n", .{try util.Random(legt)});
-        // std.debug.print("{}\n", .{try util.Random(legt)});
-        // std.debug.print("{}\n", .{try util.Random(legt)});
-        // std.debug.print("{}\n", .{&self.places.?[try util.Random(2)].name});
-        // std.debug.print("{}\n", .{&self.places.?[try util.Random(2)].name});
-        _ = .{self};
+
+        const old = self.player.?.curent_postion.?.name;
+        while (true) {
+            if (std.mem.eql(u8, old, self.player.?.curent_postion.?.name)) {
+                self.player.?.curent_postion.? = &self.places.?[try util.Random(length)];
+            } else {
+                break;
+            }
+        }
+
+        // self.player.?.curent_postion.? = &self.places.?[try util.Random(length)];
     }
 
     pub fn de(self: World) void {
