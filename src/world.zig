@@ -1,6 +1,8 @@
 const std = @import("std");
 const Places = @import("map.zig").Place;
 const Player = @import("player.zig").Player;
+const Spc = @import("map.zig").SpawnCance;
+const Monster = @import("monster.zig").Monster;
 
 const util = @import("util.zig");
 
@@ -21,7 +23,15 @@ const city = [_]Places{
 };
 
 const otherPlaces = [_]Places{
-    Places{ .name = "Small forvest" },
+    Places{
+        .name = "Small forvest",
+        .spawnC = &[_]Spc{
+            .{
+                .monster = Monster{ .name = "Zombie" },
+                .procent = [2]u32{ 0, 10 },
+            },
+        },
+    },
     Places{ .name = "Big forvest" },
     Places{ .name = "Dark forvest" },
     Places{ .name = "Dark forvest" },

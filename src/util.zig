@@ -9,6 +9,27 @@ pub fn Random(max_u8: u8) !u8 {
     return rand.intRangeAtMost(u8, 0, max_u8);
     // return r;
 }
+pub inline fn RandomT(comptime T: type, max_u8: usize) !T {
+    var prng = std.Random.DefaultPrng.init(blk: {
+        var seed: u64 = undefined;
+        try std.posix.getrandom(std.mem.asBytes(&seed));
+        break :blk seed;
+    });
+    const rand = prng.random();
+    return rand.intRangeAtMost(T, 0, max_u8);
+    // return r;
+}
+pub fn Input(allocator: std.mem.Allocator) ![]const u8 {
+    const stdin = std.io.getStdIn().reader();
+
+    const bare_line = try stdin.readUntilDelimiterAlloc(
+        allocator,
+        '\n',
+        8192,
+    );
+    const input = std.mem.trim(u8, bare_line, "\r");
+    return input;
+}
 
 // const a = rand.float(f32);
 // const b = rand.boolean();

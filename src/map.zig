@@ -1,4 +1,5 @@
 const std = @import("std");
+const utl = @import("util.zig");
 const Monster = @import("monster.zig").Monster;
 
 const Allocator = std.mem.Allocator;
@@ -10,7 +11,7 @@ pub const Place = struct {
     // maxLvl: u8,
     // // mapType: []const u8,
     // monsters: ?[]Monster,
-    spawnC: []SpawnCance,
+    spawnC: ?[]const SpawnCance = null,
     // allocator: Allocator,
 
     pub fn init(allocator: Allocator, spawn_changes: []SpawnCance, monsters_cout: usize, name: []const u8) !Place {
@@ -28,8 +29,11 @@ pub const Place = struct {
             .allocator = allocator,
         };
     }
-    pub fn generateMobs(self: Place) void {
-        _ = .{self};
+    pub fn generateMobs(self: *Place, cout: u8) void {
+        // for (cout, 0..) |_, i| {
+
+        // }
+        _ = .{ self, cout };
     }
 
     // pub fn init() self {
@@ -51,7 +55,7 @@ pub const Place = struct {
 };
 pub const SpawnCance = struct {
     monster: Monster,
-    procent: [2]u8,
+    procent: [2]u32,
     // place: Place,
 };
 
@@ -61,24 +65,24 @@ const spawns = [_]SpawnCance{
         .monster = Monster{
             .name = "Zombie",
         },
-        .procent = [2]u8{ 0, 3333 },
+        .procent = [2]u32{ 0, 3333 },
     },
     .{
         .monster = Monster{
             .name = "Skeleton",
         },
-        .procent = [2]u8{ 3334, 5000 },
+        .procent = [2]u32{ 3334, 5000 },
     },
     .{
         .monster = Monster{
             .name = "Slim",
         },
-        .procent = [2]u8{ 5001, 9989 },
+        .procent = [2]u32{ 5001, 9989 },
     },
     .{
         .monster = Monster{
             .name = "Dragon",
         },
-        .procent = [2]u8{ 9990, 10000 },
+        .procent = [2]u32{ 9990, 10000 },
     },
 };
