@@ -116,11 +116,17 @@ pub fn main() !void {
     // std.debug.print("After deinit on Monster's name: {any}\n", .{monster.name});
     const stdout = std.io.getStdOut().writer();
     // try stdout.print("Wellcome Avantur to the world of ziks \n 1) create a new Avatu\n 2) join a old Avatur\n:: ", .{});
-    while (true) {
+    var i: u8 = 0;
+    while (true) : (i += 1) {
         const cho = try util.Input(allocator);
-        defer allocator.free(cho);
+        // defer allocator.free(cho);
         const guess = std.fmt.parseInt(u8, cho, 10) catch 0;
+        allocator.free(cho);
 
+        if (i == 10) {
+            try stdout.print("\x1B[2J\x1B[H", .{});
+            i = 0;
+        }
         if (guess == 1) {
             std.debug.print("lol ez\n", .{});
         } else if (guess == 0) {
