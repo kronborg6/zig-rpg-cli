@@ -15,11 +15,155 @@ const Allocator = std.mem.Allocator;
 
 const Starter = Places{ .name = "Starter" };
 
+const cityNew = [_]Places{
+    Places{
+        .name = "FooTown1234",
+        .spawnC = &[_]Spc{
+            .{
+                .monster = Monster{ .name = "Zombie" },
+                .procent = [2]u32{ 0, 20 },
+            },
+            .{
+                .monster = Monster{ .name = "Skeleton" },
+                .procent = [2]u32{ 5000, 10000 },
+            },
+        },
+    },
+    Places{
+        .name = "ZooTown",
+        .spawnC = &[_]Spc{
+            .{
+                .monster = Monster{ .name = "Zombie" },
+                .procent = [2]u32{ 0, 10000 },
+            },
+        },
+    },
+    Places{
+        .name = "BooTown",
+        .spawnC = &[_]Spc{
+            .{
+                .monster = Monster{ .name = "Zombie" },
+                .procent = [2]u32{ 0, 10000 },
+            },
+        },
+    },
+    Places{
+        .name = "SooTown",
+        .spawnC = &[_]Spc{
+            .{
+                .monster = Monster{ .name = "Zombie" },
+                .procent = [2]u32{ 0, 10000 },
+            },
+        },
+    },
+};
+
+const otherPlacesNew = [_]Places{
+    Places{
+        .name = "Small forvest",
+        .spawnC = &[_]Spc{
+            .{
+                .monster = Monster{ .name = "Zombie" },
+                .procent = [2]u32{ 0, 10000 },
+            },
+        },
+    },
+    Places{
+        .name = "Big forvest",
+        .spawnC = &[_]Spc{
+            .{
+                .monster = Monster{ .name = "Zombie" },
+                .procent = [2]u32{ 0, 10000 },
+            },
+        },
+    },
+    Places{
+        .name = "Dark forvest",
+        .spawnC = &[_]Spc{
+            .{
+                .monster = Monster{ .name = "Zombie" },
+                .procent = [2]u32{ 0, 10000 },
+            },
+        },
+    },
+    Places{
+        .name = "Dark forvest",
+        .spawnC = &[_]Spc{
+            .{
+                .monster = Monster{ .name = "Zombie" },
+                .procent = [2]u32{ 0, 10000 },
+            },
+        },
+    },
+    Places{
+        .name = "Small Cave",
+        .spawnC = &[_]Spc{
+            .{
+                .monster = Monster{ .name = "Zombie" },
+                .procent = [2]u32{ 0, 10000 },
+            },
+        },
+    },
+    Places{
+        .name = "Big Cave",
+        .spawnC = &[_]Spc{
+            .{
+                .monster = Monster{ .name = "Zombie" },
+                .procent = [2]u32{ 0, 10000 },
+            },
+        },
+    },
+    Places{
+        .name = "Dark Cave",
+        .spawnC = &[_]Spc{
+            .{
+                .monster = Monster{ .name = "Zombie" },
+                .procent = [2]u32{ 0, 10000 },
+            },
+        },
+    },
+};
 const city = [_]Places{
-    Places{ .name = "FooTown" },
-    Places{ .name = "ZooTown" },
-    Places{ .name = "BooTown" },
-    Places{ .name = "SooTown" },
+    Places{
+        .name = "FooTown",
+        .spawnC = &[_]Spc{
+            .{
+                .monster = Monster{ .name = "Zombie" },
+                .procent = [2]u32{ 0, 4999 },
+            },
+            .{
+                .monster = Monster{ .name = "Skeleton" },
+                .procent = [2]u32{ 5000, 10000 },
+            },
+        },
+    },
+    Places{
+        .name = "ZooTown",
+        .spawnC = &[_]Spc{
+            .{
+                .monster = Monster{ .name = "Zombie" },
+                .procent = [2]u32{ 0, 10000 },
+            },
+        },
+    },
+    Places{
+        .name = "BooTown",
+        .spawnC = &[_]Spc{
+            .{
+                .monster = Monster{ .name = "Zombie" },
+                .procent = [2]u32{ 0, 10000 },
+            },
+        },
+    },
+    Places{
+        .name = "SooTown",
+        .spawnC = &[_]Spc{
+            .{
+                .monster = Monster{ .name = "Zombie" },
+                .procent = [2]u32{ 0, 10000 },
+            },
+        },
+    },
 };
 
 const otherPlaces = [_]Places{
@@ -28,16 +172,64 @@ const otherPlaces = [_]Places{
         .spawnC = &[_]Spc{
             .{
                 .monster = Monster{ .name = "Zombie" },
-                .procent = [2]u32{ 0, 10 },
+                .procent = [2]u32{ 0, 10000 },
             },
         },
     },
-    Places{ .name = "Big forvest" },
-    Places{ .name = "Dark forvest" },
-    Places{ .name = "Dark forvest" },
-    Places{ .name = "Small Cave" },
-    Places{ .name = "Big Cave" },
-    Places{ .name = "Dark Cave" },
+    Places{
+        .name = "Big forvest",
+        .spawnC = &[_]Spc{
+            .{
+                .monster = Monster{ .name = "Zombie" },
+                .procent = [2]u32{ 0, 10000 },
+            },
+        },
+    },
+    Places{
+        .name = "Dark forvest",
+        .spawnC = &[_]Spc{
+            .{
+                .monster = Monster{ .name = "Zombie" },
+                .procent = [2]u32{ 0, 10000 },
+            },
+        },
+    },
+    Places{
+        .name = "Dark forvest",
+        .spawnC = &[_]Spc{
+            .{
+                .monster = Monster{ .name = "Zombie" },
+                .procent = [2]u32{ 0, 10000 },
+            },
+        },
+    },
+    Places{
+        .name = "Small Cave",
+        .spawnC = &[_]Spc{
+            .{
+                .monster = Monster{ .name = "Zombie" },
+                .procent = [2]u32{ 0, 10000 },
+            },
+        },
+    },
+    Places{
+        .name = "Big Cave",
+        .spawnC = &[_]Spc{
+            .{
+                .monster = Monster{ .name = "Zombie" },
+                .procent = [2]u32{ 0, 10000 },
+            },
+        },
+    },
+    Places{
+        .name = "Dark Cave",
+        .spawnC = &[_]Spc{
+            .{
+                .monster = Monster{ .name = "Zombie" },
+                .procent = [2]u32{ 0, 10000 },
+            },
+        },
+    },
 };
 
 pub const World = struct {
