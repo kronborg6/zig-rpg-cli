@@ -14,9 +14,52 @@ pub fn main() !void {
     var allocator = gpa.allocator();
 
     if (dev) {
-        const stdout = std.io.getStdOut().writer();
+        const stdout = std.io.getStdOut().writer(); // std
+        //
+        var world = try W.init(&allocator, 10);
+        defer world.deinit();
+        //
+        while (true) {
+            try stdout.print("1) create a new avntur\n", .{});
+            try stdout.print("2) load a old avntur\n", .{});
+            try stdout.print(":", .{});
+            const pick = try util.Input(allocator);
+            // defer allocator.free(cho);
+            const pk = std.fmt.parseInt(u8, pick, 10) catch 0;
+            allocator.free(pick);
+
+            switch (pk) {
+                1 => { // create new avatur
+                    try stdout.print("what is your name gona be?\n", .{});
+                    try stdout.print(":", .{});
+                    const name = try util.Input(allocator);
+                    world.initPlayer(name); // add class
+                    break;
+                },
+                2 => {}, // load save
+                3 => {},
+                else => continue,
+            }
+        }
+
+        try stdout.print("Wellcome {s}\n", .{world.player.?.name});
+
+        // var world = try W.init(&allocator, 10);
+        // defer world.deinit();
+
         var i: u8 = 0;
+        var mobsGen: bool = false;
+        try world.generatePlaces(10);
         while (true) : (i += 1) {
+            if (!mobsGen) {
+                try world.player.?.curent_postion.?.generateMobs(&allocator, 4);
+                mobsGen = true;
+            }
+
+            try stdout.print("1) explore the suwrading\n", .{});
+            try stdout.print("2) check for moster types\n", .{});
+            try stdout.print("", .{});
+
             try stdout.print(":", .{});
             const cho = try util.Input(allocator);
             // defer allocator.free(cho);
@@ -29,7 +72,11 @@ pub fn main() !void {
             }
             switch (guess) {
                 1 => std.debug.print("1\n", .{}),
-                2 => std.debug.print("2\n", .{}),
+                2 => {
+                    for (world.player.?.curent_postion.?.spawnC) |value| {
+                        try stdout.print("is looks like {s} is in the {s}\n", .{ value.monster.name, world.player.?.curent_postion.?.name });
+                    }
+                },
                 3 => std.debug.print("3\n", .{}),
                 4 => std.debug.print("4\n", .{}),
                 5 => std.debug.print("5\n", .{}),
