@@ -7,54 +7,92 @@ const W = @import("world.zig").World;
 
 const util = @import("util.zig");
 
+const dev = true;
+
 pub fn main() !void {
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
     var allocator = gpa.allocator();
-    var world = try W.init(&allocator, 10);
-    defer world.deinit();
 
-    world.initPlayer("kronborg");
+    if (dev) {
+        const stdout = std.io.getStdOut().writer();
+        var i: u8 = 0;
+        while (true) : (i += 1) {
+            try stdout.print(":", .{});
+            const cho = try util.Input(allocator);
+            // defer allocator.free(cho);
+            const guess = std.fmt.parseInt(u8, cho, 10) catch 0;
+            allocator.free(cho);
 
-    // const player = try allocator.create(P);
-    // errdefer allocator.destroy(player);
+            if (i == 10) {
+                try stdout.print("\x1B[2J\x1B[H", .{});
+                i = 0;
+            }
+            switch (guess) {
+                1 => std.debug.print("1\n", .{}),
+                2 => std.debug.print("2\n", .{}),
+                3 => std.debug.print("3\n", .{}),
+                4 => std.debug.print("4\n", .{}),
+                5 => std.debug.print("5\n", .{}),
+                6 => std.debug.print("6\n", .{}),
+                7 => std.debug.print("7\n", .{}),
+                else => std.debug.print("GG fail\n", .{}),
+            }
+            // if (guess == 1) {
+            //     std.debug.print("lol ez\n", .{});
+            // } else if (guess == 0) {
+            //     try stdout.print("\x1B[2J\x1B[H", .{});
+            //     try stdout.print("needs to be a number avantur!!!\n", .{});
+            // } else {
+            //     std.debug.print("{d}\n", .{guess});
+            // }
+        }
+    } else {
+        var world = try W.init(&allocator, 10);
+        defer world.deinit();
 
-    // player.* = P.init("Kronborg"); // Initialize the player instance
-    // world.addPlayer(player);
+        world.initPlayer("kronborg");
 
-    std.debug.print("player name: {s}\n", .{world.player.?.name});
+        // const player = try allocator.create(P);
+        // errdefer allocator.destroy(player);
 
-    try world.generatePlaces(10);
-    // for (world.places.?) |value| {
-    //     std.debug.print("Placename: {s}\n", .{value.name});
-    //     // if (value.spawnC) |spawn| {
-    //     //     std.debug.print("SPAWN: {any}\n", .{spawn});
-    //     // }
-    //     // for (value.spawnC.?) |v| {
-    //     //     std.debug.print("can spawn: {any}\n", .{v});
-    //     // }
-    // }
-    // std.debug.print("Player Start place is: {s}\n", .{world.player.?.curent_postion.?.name});
-    // try world.travel();
-    // std.debug.print("from main: {any}\n", .{world.player.?.curent_postion.?.spawnC});
-    try world.player.?.curent_postion.?.generateMobs(&allocator, 4);
-    defer allocator.free(world.player.?.curent_postion.?.monsters.?);
-    // std.debug.print("Player Start place is: {s}\n", .{world.player.?.curent_postion.?.name});
+        // player.* = P.init("Kronborg"); // Initialize the player instance
+        // world.addPlayer(player);
 
-    std.debug.print("legth: {any}\n", .{world.player.?.curent_postion.?.monsters.?.len});
-    std.debug.print("Monster[0].name: {s}\n", .{world.player.?.curent_postion.?.monsters.?[0].name});
-    std.debug.print("Monster[1].name: {s}\n", .{world.player.?.curent_postion.?.monsters.?[1].name});
-    std.debug.print("Monster[2].name: {s}\n", .{world.player.?.curent_postion.?.monsters.?[2].name});
-    std.debug.print("Monster[3].name: {s}\n", .{world.player.?.curent_postion.?.monsters.?[3].name});
-    // for (world.player.?.curent_postion.?.monsters.?) |value| {
-    //     std.debug.print("this Monster is here: {any}\n", .{value.name});
-    // }
+        std.debug.print("player name: {s}\n", .{world.player.?.name});
 
-    // const random = try util.Random();
-    // std.debug.print("{}\n", .{try util.Random(12)});
-    // std.debug.print("{}\n", .{try util.Random(5)});
-    // const foo = random.intRangeAtMost(u8, 0, 10);;
+        try world.generatePlaces(10);
+        // for (world.places.?) |value| {
+        //     std.debug.print("Placename: {s}\n", .{value.name});
+        //     // if (value.spawnC) |spawn| {
+        //     //     std.debug.print("SPAWN: {any}\n", .{spawn});
+        //     // }
+        //     // for (value.spawnC.?) |v| {
+        //     //     std.debug.print("can spawn: {any}\n", .{v});
+        //     // }
+        // }
+        // std.debug.print("Player Start place is: {s}\n", .{world.player.?.curent_postion.?.name});
+        // try world.travel();
+        // std.debug.print("from main: {any}\n", .{world.player.?.curent_postion.?.spawnC});
+        try world.player.?.curent_postion.?.generateMobs(&allocator, 4);
+        defer allocator.free(world.player.?.curent_postion.?.monsters.?);
+        // std.debug.print("Player Start place is: {s}\n", .{world.player.?.curent_postion.?.name});
 
-    // std.debug.print("this is a random u8 betwen 0 and 10 {}\n", .{foo});
+        std.debug.print("legth: {any}\n", .{world.player.?.curent_postion.?.monsters.?.len});
+        std.debug.print("Monster[0].name: {s}\n", .{world.player.?.curent_postion.?.monsters.?[0].name});
+        std.debug.print("Monster[1].name: {s}\n", .{world.player.?.curent_postion.?.monsters.?[1].name});
+        std.debug.print("Monster[2].name: {s}\n", .{world.player.?.curent_postion.?.monsters.?[2].name});
+        std.debug.print("Monster[3].name: {s}\n", .{world.player.?.curent_postion.?.monsters.?[3].name});
+        // for (world.player.?.curent_postion.?.monsters.?) |value| {
+        //     std.debug.print("this Monster is here: {any}\n", .{value.name});
+        // }
+
+        // const random = try util.Random();
+        // std.debug.print("{}\n", .{try util.Random(12)});
+        // std.debug.print("{}\n", .{try util.Random(5)});
+        // const foo = random.intRangeAtMost(u8, 0, 10);;
+
+        // std.debug.print("this is a random u8 betwen 0 and 10 {}\n", .{foo});
+    }
 }
 
 test "generate Mobs" {
@@ -104,8 +142,11 @@ test "World Travel" {
     world.initPlayer("TestPlayer");
     try world.generatePlaces(2);
 
-    // const old_name = world.player.?.curent_postion.?.name;
+    try std.testing.expect(world.player.?.curent_postion != null);
+    const old_name = world.player.?.curent_postion.?.name;
+
     try world.travel();
+    try std.testing.expect(!std.mem.eql(u8, world.player.?.curent_postion.?.name, old_name));
 
     // try std.testing.Str
 }
