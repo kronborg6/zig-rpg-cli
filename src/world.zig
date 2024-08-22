@@ -129,11 +129,15 @@ const city = [_]Places{
         .spawnC = &[_]Spc{
             .{
                 .monster = Monster{ .name = "Zombie" },
-                .procent = [2]u32{ 0, 4999 },
+                .procent = [2]u32{ 0, 4997 },
+            },
+            .{
+                .monster = Monster{ .name = "Dragon" },
+                .procent = [2]u32{ 4998, 5002 },
             },
             .{
                 .monster = Monster{ .name = "Skeleton" },
-                .procent = [2]u32{ 5000, 10000 },
+                .procent = [2]u32{ 5003, 10000 },
             },
         },
     },

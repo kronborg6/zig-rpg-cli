@@ -1,5 +1,6 @@
 const std = @import("std");
 const C = @import("class.zig").Class;
+const class = @import("class.zig").classes;
 const P = @import("player.zig").Player;
 const PL = @import("map.zig").Place;
 const M = @import("monster.zig").Monster;
@@ -8,6 +9,12 @@ const W = @import("world.zig").World;
 const util = @import("util.zig");
 
 const dev = true;
+
+// const clas = enum {
+//     Wiroe,
+//     Wizre,
+//     Rouge,
+// };
 
 pub fn main() !void {
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
@@ -30,9 +37,17 @@ pub fn main() !void {
 
             switch (pk) {
                 1 => { // create new avatur
+                    try stdout.print("Pick a class\n", .{});
+                    for (class, 0..) |value, i| {
+                        try stdout.print("{d}) {s}\n", .{ i, value.name });
+                    }
+                    try stdout.print(":", .{});
+                    const clas = try util.Input(allocator);
+                    const class_id = std.fmt.parseInt(u8, clas, 10) catch 0;
                     try stdout.print("what is your name gona be?\n", .{});
                     try stdout.print(":", .{});
                     const name = try util.Input(allocator);
+                    _ = .{class_id};
                     world.initPlayer(name); // add class
                     break;
                 },
