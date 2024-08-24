@@ -36,7 +36,7 @@ pub const Place = struct {
         errdefer allocator.free(monsters);
         for (cout, 0..) |_, i| {
             const random = try utl.RandomT(u32, 10000);
-            std.debug.print("random is: {d}\n", .{random});
+            // std.debug.print("random is: {d}\n", .{random});
             _ = .{i};
 
             // std.debug.print("hello: {any}\n", .{self.name});
@@ -44,7 +44,7 @@ pub const Place = struct {
             for (self.spawnC) |value| {
                 if (random >= value.procent[0]) {
                     if (random <= value.procent[1]) {
-                        std.debug.print("YES {s}\n", .{value.monster.name});
+                        // std.debug.print("YES {s}\n", .{value.monster.name});
                         monsters[i] = value.monster;
                         break;
                     }

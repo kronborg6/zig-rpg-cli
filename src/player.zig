@@ -1,4 +1,5 @@
 const std = @import("std");
+const Monster = @import("monster.zig").Monster;
 const Class = @import("class.zig").Class;
 const Place = @import("map.zig").Place;
 pub const Player = struct {
@@ -9,7 +10,7 @@ pub const Player = struct {
     // mp: i16,
     // lvl: u8,
     // xp: u16,
-    // class: Class,
+    class: Class,
 
     pub fn init(name: []const u8) self {
         return self{
@@ -31,6 +32,11 @@ pub const Player = struct {
     }
     pub fn GetClassName(me: self) []const u8 {
         return me.class.name;
+    }
+
+    pub fn Attact(me: *self, monster: *Monster) void {
+        monster.name = "Kronborg er gud";
+        _ = .{ me, monster };
     }
     // pub fn End(me: self) void {
     //     me.allocator.free(me);

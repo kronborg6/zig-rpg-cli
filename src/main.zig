@@ -44,11 +44,15 @@ pub fn main() !void {
                     try stdout.print(":", .{});
                     const clas = try util.Input(allocator);
                     const class_id = std.fmt.parseInt(u8, clas, 10) catch 0;
+                    if (class_id > class.len) {
+                        // try stdout.print("why me\n", .{});
+                        continue;
+                    }
                     try stdout.print("what is your name gona be?\n", .{});
                     try stdout.print(":", .{});
                     const name = try util.Input(allocator);
                     _ = .{class_id};
-                    world.initPlayer(name); // add class
+                    world.initPlayer(name, class[class_id]); // add class
                     break;
                 },
                 2 => {}, // load save
@@ -57,7 +61,9 @@ pub fn main() !void {
             }
         }
 
-        try stdout.print("Wellcome {s}\n", .{world.player.?.name});
+        try stdout.print("\x1B[2J\x1B[H", .{});
+
+        try stdout.print("Wellcome {s} the {s}\n", .{ world.player.?.name, world.player.?.class.name });
 
         // var world = try W.init(&allocator, 10);
         // defer world.deinit();
@@ -86,13 +92,29 @@ pub fn main() !void {
                 i = 0;
             }
             switch (guess) {
-                1 => std.debug.print("1\n", .{}),
+                1 => {
+                    try stdout.print("you found\n", .{});
+                    while (true) {
+                        for (world.player.?.curent_postion.?.monsters.?, 0..) |value, n| {
+                            try stdout.print("{d}) {s} lvl {d}\n", .{ n, value.name, 20 });
+                        }
+
+                        try stdout.print(":", .{});
+                        const ch = try util.Input(allocator);
+                        // defer allocator.free(cho);
+                        const cc = std.fmt.parseInt(u8, ch, 10) catch 0;
+                        allocator.free(ch);
+                        std.debug.print("{any}", .{cc});
+                    }
+                },
                 2 => {
                     for (world.player.?.curent_postion.?.spawnC) |value| {
                         try stdout.print("is looks like {s} is in the {s}\n", .{ value.monster.name, world.player.?.curent_postion.?.name });
                     }
                 },
-                3 => std.debug.print("3\n", .{}),
+                3 => {
+                    world.player.?.Attact(&world.player.?.curent_postion.?.monsters.?[1]);
+                },
                 4 => std.debug.print("4\n", .{}),
                 5 => std.debug.print("5\n", .{}),
                 6 => std.debug.print("6\n", .{}),

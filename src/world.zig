@@ -1,5 +1,6 @@
 const std = @import("std");
 const Places = @import("map.zig").Place;
+const Class = @import("class.zig").Class;
 const Player = @import("player.zig").Player;
 const Spc = @import("map.zig").SpawnCance;
 const Monster = @import("monster.zig").Monster;
@@ -259,8 +260,8 @@ pub const World = struct {
     pub fn addPlayer(self: *World, player: *Player) void {
         self.player = player;
     }
-    pub fn initPlayer(self: *World, name: []const u8) void {
-        self.player.?.* = .{ .name = name, .curent_postion = null };
+    pub fn initPlayer(self: *World, name: []const u8, class: Class) void {
+        self.player.?.* = .{ .name = name, .curent_postion = null, .class = class };
     }
     pub fn Test(self: *World) void {
         self.allocator.destroy(self.player.?);

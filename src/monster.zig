@@ -4,7 +4,8 @@ const Allocator = std.mem.Allocator;
 pub const Monster = struct {
     const self = @This();
     name: []const u8,
-    // lvl: u8,
+    lvl: u8 = 1,
+    health: i8 = 100,
     // minDamage: u16,
     // maxDamage: u16,
     // allocator: Allocator,
