@@ -1,6 +1,6 @@
 const std = @import("std");
-const utl = @import("util.zig");
-const Monster = @import("monster.zig").Monster;
+const utl = @import("../util.zig");
+const Monster = @import("./monster.zig").Monster;
 
 const Allocator = std.mem.Allocator;
 

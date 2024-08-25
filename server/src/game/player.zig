@@ -1,7 +1,7 @@
 const std = @import("std");
-const Monster = @import("monster.zig").Monster;
-const Class = @import("class.zig").Class;
-const Place = @import("map.zig").Place;
+const Monster = @import("./monster.zig").Monster;
+const Class = @import("./class.zig").Class;
+const Place = @import("./map.zig").Place;
 pub const Player = struct {
     const self = @This();
     name: []const u8,

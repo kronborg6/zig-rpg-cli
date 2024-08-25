@@ -1,11 +1,11 @@
 const std = @import("std");
-const Places = @import("map.zig").Place;
-const Class = @import("class.zig").Class;
-const Player = @import("player.zig").Player;
-const Spc = @import("map.zig").SpawnCance;
-const Monster = @import("monster.zig").Monster;
+const Places = @import("./map.zig").Place;
+const Class = @import("./class.zig").Class;
+const Player = @import("./player.zig").Player;
+const Spc = @import("./map.zig").SpawnCance;
+const Monster = @import("./monster.zig").Monster;
 
-const util = @import("util.zig");
+const util = @import("../util.zig");
 
 const Allocator = std.mem.Allocator;
 
