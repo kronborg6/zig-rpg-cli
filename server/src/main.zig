@@ -14,7 +14,7 @@ pub fn main() !void {
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
     var allocator = gpa.allocator();
 
-    var world = try Game.World.init(&allocator, 10);
+    var world = try Game.World.init(&allocator, 10, 4);
     defer world.deinit();
 }
 
